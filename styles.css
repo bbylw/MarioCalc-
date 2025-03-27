@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Press Start 2P', cursive;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(#87CEEB, #E0F6FF);
+    overflow: hidden;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20%;
+    background: #5C9735;
+    z-index: -1;
+}
+
+/* 云朵装饰 */
+body::after {
+    content: "";
+    position: absolute;
+    top: 15%;
+    left: 10%;
+    width: 100px;
+    height: 50px;
+    background: white;
+    border-radius: 50px;
+    box-shadow: 
+        130px -20px 0 30px white,
+        250px 40px 0 20px white,
+        400px -10px 0 40px white,
+        -100px 50px 0 25px white;
+    z-index: -1;
+}
+
+.calculator {
+    width: 350px;
+    background-color: #E52521;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 0 #8B0000, 0 20px 25px rgba(0, 0, 0, 0.4);
+    border: 4px solid #000;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 马里奥帽子装饰 */
+.calculator::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 100px;
+    height: 30px;
+    background: #E52521;
+    border-radius: 10px;
+    transform: rotate(-45deg);
+    z-index: 1;
+}
+
+.display {
+    background-color: #9DC08B;
+    border: 3px solid #000;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: right;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.previous-operand {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.6);
+    height: 20px;
+    margin-bottom: 5px;
+}
+
+.current-operand {
+    font-size: 24px;
+    color: #000;
+    height: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+}
+
+button {
+    height: 60px;
+    border: 3px solid #000;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.1s;
+    position: relative;
+    background-color: #FBD000;
+    color: #000;
+    box-shadow: 0 5px 0 #B29700;
+}
+
+button:active {
+    transform: translateY(5px);
+    box-shadow: 0 0 0 #B29700;
+}
+
+button:hover {
+    background-color: #FFE13C;
+}
+
+button.clear {
+    background-color: #4AA5F0;
+    box-shadow: 0 5px 0 #1A75BC;
+}
+
+button.clear:hover {
+    background-color: #71B8F5;
+}
+
+button.clear:active {
+    box-shadow: 0 0 0 #1A75BC;
+}
+
+button[data-action="delete"] {
+    background-color: #FF6B6B;
+    box-shadow: 0 5px 0 #C74A4A;
+}
+
+button[data-action="delete"]:hover {
+    background-color: #FF8A8A;
+}
+
+button[data-action="delete"]:active {
+    box-shadow: 0 0 0 #C74A4A;
+}
+
+button[data-action="operator"] {
+    background-color: #43B047;
+    box-shadow: 0 5px 0 #2D7A30;
+}
+
+button[data-action="operator"]:hover {
+    background-color: #5DC661;
+}
+
+button[data-action="operator"]:active {
+    box-shadow: 0 0 0 #2D7A30;
+}
+
+button.equals {
+    background-color: #FF9B21;
+    box-shadow: 0 5px 0 #D67B10;
+}
+
+button.equals:hover {
+    background-color: #FFAE4E;
+}
+
+button.equals:active {
+    box-shadow: 0 0 0 #D67B10;
+}
+
+.span-2 {
+    grid-column: span 2;
+}
+
+/* 添加马里奥风格的管道装饰 */
+.calculator::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    right: 30px;
+    width: 40px;
+    height: 30px;
+    background: #43B047;
+    border: 3px solid #000;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+}
