@@ -5,6 +5,8 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Press Start 2P', cursive;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
 }
 
 body {
@@ -12,8 +14,12 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(#87CEEB, #E0F6FF);
+    background: linear-gradient(#5B97E5, #89CEFF);
     overflow: hidden;
+    touch-action: manipulation;
+    position: fixed;
+    width: 100%;
+    height: 100%;
 }
 
 body::before {
@@ -22,33 +28,137 @@ body::before {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 20%;
-    background: #5C9735;
+    height: 25%;
+    background: linear-gradient(to bottom, #92CC41 0%, #4AA52E 100%);
     z-index: -1;
 }
 
-/* 云朵装饰 */
+/* 添加远景山丘 */
 body::after {
     content: "";
     position: absolute;
-    top: 15%;
-    left: 10%;
-    width: 100px;
-    height: 50px;
-    background: white;
-    border-radius: 50px;
-    box-shadow: 
-        130px -20px 0 30px white,
-        250px 40px 0 20px white,
-        400px -10px 0 40px white,
-        -100px 50px 0 25px white;
+    bottom: 25%;
+    left: 0;
+    width: 100%;
+    height: 15%;
+    background: linear-gradient(to bottom, #5B97E5 0%, #5B97E5 50%, #C86F2D 50%, #C86F2D 100%);
+    z-index: -2;
+    clip-path: polygon(
+        0% 100%,
+        10% 40%,
+        20% 80%,
+        30% 40%,
+        40% 60%,
+        50% 30%,
+        60% 70%,
+        70% 40%,
+        80% 60%,
+        90% 30%,
+        100% 100%
+    );
+}
+
+/* 添加浮动云朵 */
+.clouds {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     z-index: -1;
+    pointer-events: none;
+}
+
+.cloud {
+    position: absolute;
+    width: 100px;
+    height: 40px;
+    background: white;
+    border-radius: 40px;
+    animation: float 20s linear infinite;
+}
+
+.cloud::before,
+.cloud::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+}
+
+.cloud::before {
+    width: 50px;
+    height: 50px;
+    top: -20px;
+    left: 15px;
+}
+
+.cloud::after {
+    width: 60px;
+    height: 60px;
+    top: -25px;
+    right: 15px;
+}
+
+.cloud:nth-child(1) {
+    top: 15%;
+    left: -100px;
+    transform: scale(1.2);
+    animation-delay: 0s;
+}
+
+.cloud:nth-child(2) {
+    top: 25%;
+    left: -100px;
+    transform: scale(0.8);
+    animation-delay: -5s;
+}
+
+.cloud:nth-child(3) {
+    top: 10%;
+    left: -100px;
+    transform: scale(1);
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    from {
+        transform: translateX(-100px);
+    }
+    to {
+        transform: translateX(calc(100vw + 100px));
+    }
+}
+
+/* 移动端云朵优化 */
+@media (max-width: 768px) {
+    .cloud {
+        animation-duration: 15s;
+    }
+    
+    .cloud:nth-child(1) {
+        transform: scale(0.8);
+    }
+    
+    .cloud:nth-child(2) {
+        transform: scale(0.6);
+    }
+    
+    .cloud:nth-child(3) {
+        transform: scale(0.7);
+    }
+}
+
+@media (max-width: 480px) {
+    .cloud {
+        animation-duration: 12s;
+    }
 }
 
 /* 基础样式调整为响应式 */
 .calculator {
-    width: 90%; /* 原350px → 百分比适配 */
-    max-width: 350px; /* 保持桌面端最大宽度 */
+    width: 90%;
+    max-width: 350px;
     background-color: #E52521;
     border-radius: 15px;
     padding: 20px;
@@ -56,6 +166,9 @@ body::after {
     border: 4px solid #000;
     position: relative;
     overflow: hidden;
+    padding-bottom: 60px;
+    margin: 20px auto;
+    transform: translateZ(0); /* 启用硬件加速 */
 }
 
 /* 修正马里奥基础定位容器高度 */
@@ -90,35 +203,140 @@ body::after {
     100% { transform: translate(-50%, -50%) translateY(0); }
 }
 
-/* 响应式媒体查询 */
+/* 响应式设计优化 */
 @media (max-width: 768px) {
     .calculator {
-        padding: 15px; /* 缩小内边距 */
+        width: 95%;
+        padding: 15px;
+        margin: 10px auto;
     }
     
     .keypad {
-        grid-template-columns: repeat(4, 1fr); /* 保持4列但调整间隙 */
-        grid-gap: 8px;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 10px;
     }
     
     button {
-        height: 50px; /* 减小按钮高度 */
+        height: 55px;
+        font-size: 16px;
+        border-width: 2px;
+    }
+
+    .display {
+        padding: 12px;
+        margin-bottom: 12px;
+        min-height: 100px;
+    }
+
+    .current-operand {
+        font-size: 1.8em;
+    }
+
+    .previous-operand {
+        font-size: 0.9em;
     }
 }
 
 @media (max-width: 500px) {
+    .calculator {
+        width: 98%;
+        padding: 10px;
+        margin: 5px auto;
+    }
+    
     .keypad {
-        grid-template-columns: repeat(2, 1fr); /* 小屏幕改为2列 */
+        grid-template-columns: repeat(4, 1fr);
         grid-gap: 6px;
     }
     
     button {
         height: 45px;
-        font-size: 16px;
+        font-size: 14px;
+        border-width: 2px;
+    }
+
+    .display {
+        padding: 10px;
+        margin-bottom: 10px;
+        min-height: 90px;
+    }
+
+    .current-operand {
+        font-size: 1.5em;
+    }
+
+    .previous-operand {
+        font-size: 0.8em;
+    }
+
+    /* 优化云朵装饰在移动端的显示 */
+    body::after {
+        top: 10%;
+        left: 5%;
+        width: 60px;
+        height: 30px;
+        box-shadow: 
+            80px -10px 0 20px white,
+            160px 20px 0 15px white,
+            240px -5px 0 25px white,
+            -60px 30px 0 15px white;
+    }
+
+    /* 优化管道装饰在移动端的显示 */
+    .calculator::after {
+        width: 30px;
+        height: 20px;
+        right: 20px;
+    }
+}
+
+/* 添加横屏支持 */
+@media (max-height: 500px) and (orientation: landscape) {
+    .calculator {
+        width: 90%;
+        max-width: 600px;
+        padding: 10px;
     }
     
-    .calculator {
-        padding: 12px;
+    .keypad {
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 5px;
+    }
+    
+    button {
+        height: 35px;
+        font-size: 12px;
+    }
+
+    .display {
+        padding: 8px;
+        margin-bottom: 8px;
+        min-height: 70px;
+    }
+
+    .current-operand {
+        font-size: 1.3em;
+    }
+
+    .previous-operand {
+        font-size: 0.7em;
+    }
+
+    /* 优化横屏时的装饰元素 */
+    body::after {
+        display: none;
+    }
+}
+
+/* 添加触摸设备优化 */
+@media (hover: none) {
+    button {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    button:active {
+        transform: translateY(3px);
+        box-shadow: 0 2px 0 #B29700;
     }
 }
 
@@ -132,6 +350,38 @@ body::after {
     text-align: right;
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
     position: relative;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+}
+
+.current-operand {
+    font-size: 2em;
+    line-height: 1.2;
+    word-wrap: break-word;
+    transition: transform 0.1s ease;
+}
+
+.previous-operand {
+    font-size: 1em;
+    color: rgba(0, 0, 0, 0.7);
+    min-height: 1.2em;
+}
+
+/* 优化数字显示溢出处理 */
+.current-operand, .previous-operand {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.current-operand::-webkit-scrollbar,
+.previous-operand::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 }
 
 .current-operand {
@@ -455,24 +705,78 @@ body::after {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 10px;
+    transform: translateZ(0); /* 启用硬件加速 */
 }
 
 button {
     height: 60px;
     border: 3px solid #000;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 18px;
     cursor: pointer;
-    transition: transform 0.1s;
+    transition: all 0.15s ease;
     position: relative;
     background-color: #FBD000;
     color: #000;
     box-shadow: 0 5px 0 #B29700;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    transform: translateZ(0); /* 启用硬件加速 */
 }
 
 button:active {
     transform: translateY(5px);
     box-shadow: 0 0 0 #B29700;
+}
+
+/* 优化按钮触摸区域 */
+button::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    z-index: -1;
+}
+
+/* 添加触摸设备的特殊样式 */
+@media (hover: none) {
+    button {
+        transition: all 0.1s ease;
+    }
+
+    button:active {
+        transform: translateY(3px);
+        box-shadow: 0 2px 0 #B29700;
+        background-color: #FFE13C;
+    }
+}
+
+/* 优化按钮在不同屏幕尺寸下的大小 */
+@media (max-width: 360px) {
+    button {
+        height: 50px;
+        font-size: 16px;
+        border-width: 2px;
+    }
+}
+
+/* 横屏模式优化 */
+@media (max-height: 450px) and (orientation: landscape) {
+    button {
+        height: 40px;
+        font-size: 14px;
+        border-width: 2px;
+    }
+    
+    .keypad {
+        grid-gap: 6px;
+    }
 }
 
 button:hover {
@@ -535,7 +839,42 @@ button.equals:active {
     grid-column: span 2;
 }
 
-/* 添加马里オ风格的管道装饰 */
+/* 添加马里奥风格装饰元素 */
+/* 砖块装饰 */
+.brick-decoration {
+    position: absolute;
+    top: 10%;
+    right: 5%;
+    width: 40px;
+    height: 40px;
+    background: #D87F33;
+    border: 3px solid #000;
+    z-index: -1;
+}
+
+.brick-decoration::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 4px;
+    background: #8B4513;
+}
+
+.brick-decoration::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(90deg);
+    width: 80%;
+    height: 4px;
+    background: #8B4513;
+}
+
+/* 管道装饰 */
 .calculator::after {
     content: "";
     position: absolute;
@@ -543,10 +882,208 @@ button.equals:active {
     right: 30px;
     width: 40px;
     height: 30px;
-    background: #43B047;
+    background: linear-gradient(to bottom, #43B047 0%, #2E8A3A 100%);
     border: 3px solid #000;
     border-bottom: none;
     border-radius: 5px 5px 0 0;
+    box-shadow: inset -5px 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* 添加管道顶部高光 */
+.calculator::before {
+    content: "";
+    position: absolute;
+    bottom: -7px;
+    right: 33px;
+    width: 34px;
+    height: 5px;
+    background: #4AC556;
+    border-radius: 3px 3px 0 0;
+    z-index: 1;
+}
+
+/* 马里奥蘑菇装饰 */
+.mushroom {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    z-index: -1;
+    pointer-events: none;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    transform-origin: bottom center;
+}
+
+/* 蘑菇头部 */
+.mushroom::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 55%;
+    border-radius: 20px 20px 2px 2px;
+    border: 3px solid #000;
+    box-sizing: border-box;
+    background-size: 8px 8px;
+}
+
+/* 蘑菇底部 */
+.mushroom::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 65%;
+    height: 45%;
+    background: #FFF;
+    border: 3px solid #000;
+    border-radius: 3px;
+    box-sizing: border-box;
+    box-shadow: inset 0 4px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 超级蘑菇 */
+.mushroom.super::before {
+    background: #E52521;
+    background-image: 
+        radial-gradient(circle at 30% 30%, #FFF 0, #FFF 20%, transparent 20%),
+        radial-gradient(circle at 70% 30%, #FFF 0, #FFF 20%, transparent 20%),
+        linear-gradient(90deg, transparent 47%, rgba(0,0,0,0.1) 47%, rgba(0,0,0,0.1) 53%, transparent 53%);
+}
+
+/* 1UP蘑菇 */
+.mushroom.oneup::before {
+    background: #43B047;
+    background-image: 
+        radial-gradient(circle at 30% 30%, #FFF 0, #FFF 20%, transparent 20%),
+        radial-gradient(circle at 70% 30%, #FFF 0, #FFF 20%, transparent 20%),
+        linear-gradient(90deg, transparent 47%, rgba(0,0,0,0.1) 47%, rgba(0,0,0,0.1) 53%, transparent 53%);
+}
+
+/* 蘑菇眼睛 */
+.mushroom.super::before,
+.mushroom.oneup::before {
+    box-shadow: inset 0 4px 5px rgba(255, 255, 255, 0.3);
+}
+
+/* 蘑菇阴影 */
+.mushroom::after {
+    background: linear-gradient(to bottom, #FFF 60%, #F0F0F0 100%);
+}
+
+/* 蘑菇动画 */
+@keyframes mushroomFloat {
+    0% { 
+        transform: translateY(0) rotate(0deg) scale(1); 
+    }
+    25% {
+        transform: translateY(-8px) rotate(-2deg) scale(1.02);
+    }
+    50% { 
+        transform: translateY(-15px) rotate(0deg) scale(1.05);
+    }
+    75% {
+        transform: translateY(-8px) rotate(2deg) scale(1.02);
+    }
+    100% { 
+        transform: translateY(0) rotate(0deg) scale(1);
+    }
+}
+
+@keyframes mushroomBob {
+    0%, 100% {
+        transform: scaleY(1);
+    }
+    50% {
+        transform: scaleY(0.95);
+    }
+}
+
+.mushroom {
+    animation: mushroomFloat 4s ease-in-out infinite;
+}
+
+.mushroom::after {
+    animation: mushroomBob 2s ease-in-out infinite;
+}
+
+/* 错开动画时间 */
+.mushroom:nth-child(1) {
+    animation-delay: -0.5s;
+}
+
+.mushroom:nth-child(2) {
+    animation-delay: -1.5s;
+}
+
+.mushroom:nth-child(3) {
+    animation-delay: -2.5s;
+}
+
+.mushroom:nth-child(4) {
+    animation-delay: -3.5s;
+}
+
+/* 添加悬停效果 */
+@media (hover: hover) {
+    .mushroom:hover {
+        animation-play-state: paused;
+        transform: scale(1.1);
+        transition: transform 0.3s ease;
+    }
+}
+
+/* 优化移动端动画 */
+@media (max-width: 768px) {
+    .mushroom {
+        animation-duration: 3s;
+    }
+    
+    @keyframes mushroomFloat {
+        0% { 
+            transform: translateY(0) rotate(0deg) scale(1); 
+        }
+        50% { 
+            transform: translateY(-10px) rotate(0deg) scale(1.02);
+        }
+        100% { 
+            transform: translateY(0) rotate(0deg) scale(1);
+        }
+    }
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .mushroom {
+        width: 30px;
+        height: 30px;
+    }
+    .brick-decoration {
+        width: 30px;
+        height: 30px;
+        top: 5%;
+        right: 8%;
+    }
+
+    .calculator::after {
+        width: 30px;
+        height: 25px;
+        right: 20px;
+    }
+
+    .calculator::before {
+        width: 24px;
+        right: 23px;
+        height: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .brick-decoration {
+        width: 25px;
+        height: 25px;
+    }
 }
 
 /* 添加响应式适配 */
