@@ -45,8 +45,10 @@ body::after {
     z-index: -1;
 }
 
+/* 基础样式调整为响应式 */
 .calculator {
-    width: 350px;
+    width: 90%; /* 原350px → 百分比适配 */
+    max-width: 350px; /* 保持桌面端最大宽度 */
     background-color: #E52521;
     border-radius: 15px;
     padding: 20px;
@@ -56,7 +58,87 @@ body::after {
     overflow: hidden;
 }
 
-/* 马里奥帽子装饰 */
+/* 修正马里奥基础定位容器高度 */
+.calculator {
+    position: relative; /* 确保绝对定位基准 */
+    padding-bottom: 60px; /* 新增底部内边距防止被截断 */
+}
+
+/* 修复马里奥定位上下文 */
+.display {
+    position: relative; /* 确保.mario-face定位基准正确 */
+    min-height: 120px; /* 新增最小高度保证显示空间 */
+}
+
+/* 修正马里奥定位计算 */
+.mario-face {
+    top: 45%; /* 调整垂直定位基准 */
+    transform: translate(-50%, -70%); /* 调整垂直偏移 */
+}
+
+/* 修复动画位置偏移问题 */
+.show-mario .mario-face {
+    animation: mario-jump 0.5s ease-in-out; 
+    transform: translate(-50%, -50%); /* 重置基础位置 */
+}
+
+/* 新增关键帧动画定义（之前缺失） */
+@keyframes mario-jump {
+    0% { transform: translate(-50%, -50%) translateY(0); }
+    30% { transform: translate(-50%, -50%) translateY(-15px); }
+    60% { transform: translate(-50%, -50%) translateY(5px); }
+    100% { transform: translate(-50%, -50%) translateY(0); }
+}
+
+/* 响应式媒体查询 */
+@media (max-width: 768px) {
+    .calculator {
+        padding: 15px; /* 缩小内边距 */
+    }
+    
+    .keypad {
+        grid-template-columns: repeat(4, 1fr); /* 保持4列但调整间隙 */
+        grid-gap: 8px;
+    }
+    
+    button {
+        height: 50px; /* 减小按钮高度 */
+    }
+}
+
+@media (max-width: 500px) {
+    .keypad {
+        grid-template-columns: repeat(2, 1fr); /* 小屏幕改为2列 */
+        grid-gap: 6px;
+    }
+    
+    button {
+        height: 45px;
+        font-size: 16px;
+    }
+    
+    .calculator {
+        padding: 12px;
+    }
+}
+
+/* 显示区域响应式 */
+.display {
+    background-color: #9DC08B;
+    border: 3px solid #000;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    text-align: right;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.current-operand {
+    font-size: calc(1.5em + 1vw); /* 动态字体大小 */
+}
+
+/* 马里オ帽子装饰 */
 .calculator::before {
     content: "";
     position: absolute;
@@ -70,31 +152,303 @@ body::after {
     z-index: 1;
 }
 
-.display {
-    background-color: #9DC08B;
-    border: 3px solid #000;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 20px;
-    text-align: right;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
-    position: relative;
+/* 修改马里奥基础尺寸及响应式适配 - 更符合经典形象 */
+.mario-face {
+    width: 70px; /* 增加基础宽度 */
+    height: 100px; /* 增加基础高度 */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    display: none;
 }
 
-.previous-operand {
-    font-size: 14px;
-    color: rgba(0, 0, 0, 0.6);
+/* 添加马里奥的面部元素样式 - 更符合经典形象 */
+.mario-face .head {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 38px;
+    height: 38px;
+    background-color: #FFCCA8; /* 更准确的肤色 */
+    border-radius: 50% 50% 45% 45%;
+    border: 2px solid #000;
+    z-index: 2;
+}
+
+.mario-face .eyes {
+    position: absolute;
+    top: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 10px;
+    z-index: 3;
+}
+
+.mario-face .eyes::before,
+.mario-face .eyes::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #FFFFFF; /* 白色眼球 */
+    border-radius: 50%;
+    border: 1px solid #000;
+}
+
+.mario-face .eyes::before {
+    left: 3px;
+}
+
+.mario-face .eyes::after {
+    right: 3px;
+}
+
+/* 添加眼球中的蓝色瞳孔 */
+.mario-face .eyes::before::after,
+.mario-face .eyes::after::after {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background-color: #3498db; /* 蓝色瞳孔 */
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+}
+
+.mario-face .nose {
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 12px;
+    background-color: #E5846A; /* 更准确的鼻子颜色 */
+    border-radius: 50%;
+    border: 1px solid #000;
+    z-index: 3;
+}
+
+.mario-face .mustache {
+    position: absolute;
+    top: 42px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 38px;
+    height: 12px;
+    z-index: 3;
+}
+
+.mario-face .mustache::before,
+.mario-face .mustache::after {
+    content: "";
+    position: absolute;
+    width: 19px;
+    height: 8px;
+    background-color: #4A2604; /* 深棕色胡子 */
+    border-radius: 45%;
+    border: 1px solid #000;
+}
+
+.mario-face .mustache::before {
+    left: 0;
+    transform: rotate(15deg);
+}
+
+.mario-face .mustache::after {
+    right: 0;
+    transform: rotate(-15deg);
+}
+
+.mario-face .body {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px;
+    height: 25px;
+    background-color: #E52521; /* 红色衣服 */
+    border: 2px solid #000;
+    border-radius: 10px 10px 0 0;
+    z-index: 1;
+}
+
+.mario-face .overalls {
+    position: absolute;
+    top: 65px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px;
+    height: 25px;
+    background-color: #1658D3; /* 更准确的蓝色背带裤 */
+    border: 2px solid #000;
+    border-radius: 0 0 10px 10px;
+    z-index: 1;
+}
+
+/* 添加背带 */
+.mario-face .overalls::before,
+.mario-face .overalls::after {
+    content: "";
+    position: absolute;
+    width: 8px;
     height: 20px;
-    margin-bottom: 5px;
+    background-color: #1658D3; /* 蓝色背带 */
+    border: 1px solid #000;
+    top: -15px;
+    z-index: 2;
 }
 
-.current-operand {
-    font-size: 24px;
-    color: #000;
-    height: 30px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.mario-face .overalls::before {
+    left: 8px;
+    transform: rotate(-5deg);
+}
+
+.mario-face .overalls::after {
+    right: 8px;
+    transform: rotate(5deg);
+}
+
+/* 添加黄色按钮 */
+.mario-face .overalls::before::after,
+.mario-face .overalls::after::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: #FBD000; /* 黄色按钮 */
+    border-radius: 50%;
+    border: 1px solid #000;
+    top: 5px;
+    left: 0;
+}
+
+.mario-face .m-logo {
+    position: absolute;
+    top: 55px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 20px;
+    background-color: #FFFFFF; /* 白色圆形背景 */
+    border-radius: 50%;
+    border: 1px solid #000;
+    z-index: 2;
+}
+
+.mario-face .m-logo::before {
+    content: "M";
+    position: absolute;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    font-weight: bold;
+    color: #E52521; /* 红色M标志 */
+    left: 4px;
+    top: 3px;
+}
+
+/* 添加帽子边缘 */
+.mario-face::after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px;
+    height: 5px;
+    background-color: #E52521; /* 红色帽檐 */
+    border: 2px solid #000;
+    border-radius: 3px;
+    z-index: 3;
+}
+
+/* 修复帽子位置和比例 - 更符合经典形象 */
+.mario-face::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px; /* 帽子宽度 */
+    height: 25px; /* 帽子高度 */
+    background-color: #E52521; /* 红色帽子 */
+    border: 2px solid #000;
+    border-radius: 15px 15px 0 0;
+    z-index: 4;
+}
+
+/* 修复头部位置和尺寸 */
+.mario-face .head {
+    top: 20px; /* 头部位置 */
+    width: 36px; /* 头部宽度 */
+    height: 36px; /* 头部高度 */
+    border-radius: 50%;
+}
+
+/* 调整鼻子位置 */
+.mario-face .nose {
+    top: 36px; /* 鼻子位置 */
+    width: 10px;
+    height: 10px;
+}
+
+/* 优化胡子样式 */
+.mario-face .mustache {
+    top: 40px; /* 胡子位置 */
+    width: 36px;
+}
+
+.mario-face .mustache::before,
+.mario-face .mustache::after {
+    width: 18px; /* 子元素宽度 */
+    height: 6px;
+}
+
+/* 响应式适配优化 */
+@media (max-width: 768px) {
+    .mario-face {
+        width: 50px;
+        height: 75px;
+    }
+    .mario-face::before {
+        width: 35px;
+        height: 18px;
+    }
+    .mario-face .head {
+        width: 30px;
+        height: 30px;
+        top: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mario-face {
+        width: 40px;
+        height: 60px;
+    }
+    .mario-face::before {
+        width: 30px;
+        height: 15px;
+    }
+    .mario-face .head {
+        width: 25px;
+        height: 25px;
+        top: 14px;
+    }
+}
+
+/* 显示马里オ头像时的样式 */
+.show-mario .current-operand {
+    opacity: 0; /* 计算结果隐藏时显示头像 */
+}
+
+.show-mario .mario-face {
+    display: block;
+    animation: mario-jump 0.5s ease-in-out; /* 动画关键帧已定义 */
 }
 
 .keypad {
@@ -181,7 +535,7 @@ button.equals:active {
     grid-column: span 2;
 }
 
-/* 添加马里奥风格的管道装饰 */
+/* 添加马里オ风格的管道装饰 */
 .calculator::after {
     content: "";
     position: absolute;
@@ -193,4 +547,146 @@ button.equals:active {
     border: 3px solid #000;
     border-bottom: none;
     border-radius: 5px 5px 0 0;
+}
+
+/* 添加响应式适配 */
+@media (max-width: 768px) {
+    .mario-face {
+        width: 65px;
+        height: 95px;
+    }
+
+    .mario-face::before {
+        width: 40px;
+        height: 22px;
+        top: -3px;
+    }
+
+    .mario-face::after {
+        width: 40px;
+        height: 4px;
+        top: 14px;
+    }
+
+    .mario-face .head {
+        width: 35px;
+        height: 35px;
+        top: 16px;
+    }
+
+    .mario-face .eyes {
+        top: 24px;
+        width: 30px;
+    }
+
+    .mario-face .nose {
+        top: 33px;
+        width: 10px;
+        height: 10px;
+    }
+
+    .mario-face .mustache {
+        top: 40px;
+        width: 35px;
+    }
+
+    .mario-face .body {
+        top: 48px;
+        width: 40px;
+    }
+
+    .mario-face .overalls {
+        top: 62px;
+        width: 40px;
+    }
+
+    .mario-face .m-logo {
+        top: 52px;
+        width: 18px;
+        height: 18px;
+    }
+
+    .mario-face .m-logo::before {
+        font-size: 10px;
+        left: 4px;
+        top: 3px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mario-face {
+        width: 55px;
+        height: 85px;
+    }
+
+    .mario-face::before {
+        width: 35px;
+        height: 18px;
+        top: -2px;
+    }
+
+    .mario-face::after {
+        width: 35px;
+        height: 4px;
+        top: 12px;
+    }
+
+    .mario-face .head {
+        width: 30px;
+        height: 30px;
+        top: 14px;
+    }
+
+    .mario-face .eyes {
+        top: 22px;
+        width: 26px;
+    }
+
+    .mario-face .eyes::before,
+    .mario-face .eyes::after {
+        width: 8px;
+        height: 8px;
+    }
+
+    .mario-face .nose {
+        top: 30px;
+        width: 9px;
+        height: 9px;
+    }
+
+    .mario-face .mustache {
+        top: 36px;
+        width: 30px;
+        height: 10px;
+    }
+
+    .mario-face .mustache::before,
+    .mario-face .mustache::after {
+        height: 7px;
+        width: 15px;
+    }
+
+    .mario-face .body {
+        top: 44px;
+        width: 35px;
+        height: 22px;
+    }
+
+    .mario-face .overalls {
+        top: 58px;
+        width: 35px;
+        height: 22px;
+    }
+
+    .mario-face .m-logo {
+        top: 48px;
+        width: 16px;
+        height: 16px;
+    }
+
+    .mario-face .m-logo::before {
+        font-size: 9px;
+        left: 3px;
+        top: 3px;
+    }
 }

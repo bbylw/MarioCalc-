@@ -1,0 +1,5 @@
+- index.html      // 主页面文件
+- styles.css      // 样式文件（含马里奥头像动画）
+- script.js       // 业务逻辑（计算+动画控制）
+- sounds/         // 音效文件夹（包含smb_coin.wav等）
+- README.md       // 项目说明文档

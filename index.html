@@ -2,15 +2,24 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>马里奥计算器</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="calculator">
-      <div class="display">
+      <div class="display" style="position: relative;">
         <div class="previous-operand"></div>
         <div class="current-operand">0</div>
+        <div class="mario-face">
+          <div class="head"></div>
+          <div class="eyes"></div>
+          <div class="nose"></div>
+          <div class="mustache"></div>
+          <div class="body"></div>
+          <div class="overalls"></div>
+          <div class="m-logo"></div>
+        </div>
       </div>
       <div class="keypad">
         <button class="clear" data-action="clear">AC</button>
@@ -38,6 +47,7 @@
         <button data-action="calculate" class="equals">=</button>
       </div>
     </div>
+    <!-- 预加载音效 -->
     <audio id="coin" src="sounds/smb_coin.wav"></audio>
     <audio id="jump" src="sounds/smb_jump-small.wav"></audio>
     <audio id="pipe" src="sounds/smb_pipe.wav"></audio>
