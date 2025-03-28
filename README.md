@@ -2,7 +2,7 @@
 
 一个独特的网页计算器，采用经典超级马里奥游戏风格设计，具有精美的视觉效果和游戏音效。
 
-![马里奥计算器预览](https://user-images.githubusercontent.com/your-username/mario-calculator/preview.png)
+![马里奥计算器预览](demo.png)
 
 ## ✨ 特性
 
