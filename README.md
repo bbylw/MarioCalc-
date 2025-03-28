@@ -2,7 +2,7 @@
 
 一个独特的网页计算器，完美融合经典超级马里奥游戏元素与实用计算功能，带来趣味十足的计算体验。
 
-![马里奥计算器预览](https://user-images.githubusercontent.com/your-username/mario-calculator/preview.png)
+![马里奥计算器预览](demo.png)
 
 ## ✨ 特性
 
