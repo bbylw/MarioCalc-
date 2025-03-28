@@ -1,7 +1,0 @@
-/* 修正管道装饰位置避免遮挡 */
-.calculator::after {
-    right: 20px; /* 调整位置 */
-    bottom: -5px;
-    width: 30px;
-    height: 25px;
-}
